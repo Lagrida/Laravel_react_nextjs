@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderCompletedEvent;
 use App\Http\Requests\OrdereRequest;
 use App\Http\Resources\OrdereResource;
 use App\Models\Link;
@@ -94,6 +95,8 @@ class OrdereController extends Controller
         $ordere->is_completed = true;
 
         $ordere->save();
+
+        event(new OrderCompletedEvent($ordere));
 
         return response([
             'message' => 'Success'
